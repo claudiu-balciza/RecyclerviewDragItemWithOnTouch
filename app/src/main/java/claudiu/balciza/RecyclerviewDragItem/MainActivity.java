@@ -1,20 +1,30 @@
 package claudiu.balciza.RecyclerviewDragItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 
 import claudiu.balciza.RecyclerviewDragItem.Adapters.DataAdapter;
 import claudiu.balciza.RecyclerviewDragItem.Model.Data;
 
+/**
+ * you will notice that the onSwiped at times is followed by the onLongClick
+ * especially when swiping left
+ *
+ * the RvItemTouchListener onLeftSwipe and onRightSwipe don't trigger any more
+**/
+
 public class MainActivity extends AppCompatActivity implements RecyclerViewDragHelper.AnimationListener {
-  private static final String TAG = "test1:activityMain:";
+  private static final String TAG = "RecyclerViewDragItem:activityMain:";
   private ArrayList<Data> data;
   private Context context;
   private DataAdapter dataAdapter;
@@ -34,6 +44,33 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewDragH
     rvData.setLayoutManager(new LinearLayoutManager(context));
 
     new ItemTouchHelper(new RecyclerViewDragHelper(this)).attachToRecyclerView(rvData);
+
+    rvData.addOnItemTouchListener(new RvItemTouchListener1(
+        context,
+        rvData,
+        new RvItemTouchListener1.OnTouchActionListener() {
+          @Override
+          public void onLeftSwipe(View view, int position) {
+            Log.d(TAG, "RvItemTouchListener1:onLeftSwipe");
+          }
+
+          @Override
+          public void onRightSwipe(View view, int position) {
+            Log.d(TAG, "RvItemTouchListener1:onRightSwipe");
+          }
+
+          @Override
+          public void onClick(View view, int position, float x, float y) {
+            Log.d(TAG, "RvItemTouchListener1:onClick");
+          }
+
+          @Override
+          public void onLongClick(View view, int position, float x, float y) {
+            Log.d(TAG, "RvItemTouchListener1:onLongClick");
+          }
+        }
+    ));
+
   }
 
   @Override

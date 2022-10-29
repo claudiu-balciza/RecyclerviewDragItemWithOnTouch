@@ -1,10 +1,16 @@
 package claudiu.balciza.RecyclerviewDragItem;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class RecyclerViewDragHelper extends ItemTouchHelper.Callback {
+  private static final String TAG = "RecyclerViewDragItem:RecyclerViewDragHelper:";
   private AnimationListener animationListener;
 
   public RecyclerViewDragHelper(AnimationListener animationListener) {
@@ -20,6 +26,7 @@ public class RecyclerViewDragHelper extends ItemTouchHelper.Callback {
 
   @Override
   public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+    Log.d(TAG, "onMove");
     if(animationListener != null) {
       animationListener.onMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
     }
@@ -28,6 +35,8 @@ public class RecyclerViewDragHelper extends ItemTouchHelper.Callback {
 
   @Override
   public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+    // direction ItemTouchHelper.UP, ItemTouchHelper.DOWN, ItemTouchHelper.START, ItemTouchHelper.END
+    Log.d(TAG, "onSwiped");
     if(animationListener != null) {
       animationListener.onSwiped(direction, viewHolder.getAdapterPosition());
     }
